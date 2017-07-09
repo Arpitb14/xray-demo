@@ -35,9 +35,9 @@ passport.deserializeUser(Account.deserializeUser());
 
 
 if (process.env.MONGO_IP) {
-  let IP = process.env.MONGO_IP
+  var IP = process.env.MONGO_IP
 } else {
-  let IP = 'localhost'
+  var IP = 'localhost'
 }
 
 mongoose.connect('mongodb://' + IP + '/passport');
