@@ -19,7 +19,7 @@
 
 							<!-- Logo -->
 								<a href="index.html" class="logo">
-									<span class="symbol"><img src="/images/logo.svg" alt="" /></span><span class="title">Register</span>
+									<span class="symbol"><img src="/images/logo.svg" alt="" /></span><span class="title">Sent</span>
 								</a>
 
 							<!-- Nav -->
@@ -48,23 +48,12 @@
 					<div id="main">
 						<div class="inner">
 							<header>
-								<% if(error){ %>
-								<h1><%= error %></h1>
+								<% if(user){ %>
+								<h1>Thank you <%= user.username %></h1>
 								<% } else{ %>
-								<h1>Register</h1>
+								<h1>Thank you Guest!</h1>
 								<% } %>
 							</header>
-								<form method="post" action="/register">
-									<div class="field half first">
-										<input type="text" name="username" id="username" placeholder="Username" />
-									</div>
-									<div class="field half">
-										<input type="password" name="password" id="password" placeholder="Password" />
-									</div>
-									<ul class="actions">
-										<li><input type="submit" value="Register" class="special" /></li>
-									</ul>
-								</form>
 						</div>
 					</div>
 
