@@ -1,5 +1,5 @@
 const AWSXRay = require('aws-xray-sdk'),
-      AWS = require('aws-sdk'),
+      AWS = AWSXRay.captureAWS(require('aws-sdk')),
       s3 = AWSXRay.captureAWSClient(new AWS.S3({apiVersion: '2006-03-01', region: 'eu-west-1'})),
       multer = require('multer'),
       multerS3 = require('multer-s3');

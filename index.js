@@ -17,10 +17,6 @@ const S3 = require('./controllers/s3');
 
 AWSXRay.captureHTTPsGlobal(require('http'));
 
-// Segments
-app.use(AWSXRay.express.openSegment('front'));
-app.use(AWSXRay.express.openSegment('queue'));
-
 app.use(express.static('assets'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -39,6 +35,7 @@ passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
+app.use(AWSXRay.express.openSegment('front-end'));
 
 if (process.env.MONGO_IP) {
   var IP = process.env.MONGO_IP
@@ -48,26 +45,26 @@ if (process.env.MONGO_IP) {
 
 mongoose.connect('mongodb://' + IP + '/passport');
 
-app.post('/send', (req, res) => {
-    Message.sendMessage(req.body.name, req.body.email, req.body.message, "https://sqs.eu-west-1.amazonaws.com/786642626264/flynn-test")
-    res.redirect('/');
+  app.post('/send', (req, res) => {
+      Message.sendMessage(req.body.name, req.body.email, req.body.message, "https://sqs.eu-west-1.amazonaws.com/786642626264/flynn-test")
+      res.redirect('/');
+  });
+
+  app.post('/upload', S3.array('upl', 1), (req, res, next) => {
+      res.redirect('/');
+  });
+
+
+app.get('/upload', (req, res) => {
+    res.render('upload', { user : req.user });
 });
 
 app.post('/login', passport.authenticate('local'), (req, res) => {
     res.redirect('/');
 });
 
-
 app.get('/register', (req, res) => {
     res.render('register', { error : null });
-});
-
-app.get('/upload', (req, res) => {
-    res.render('upload', { user : req.user });
-});
-
-app.post('/upload', S3.array('upl',1), (req, res, next) => {
-    res.redirect('/');
 });
 
 app.post('/register', (req, res) => {

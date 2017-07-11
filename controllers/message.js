@@ -1,5 +1,5 @@
 const AWSXRay = require('aws-xray-sdk'),
-      AWS = require('aws-sdk'),
+      AWS = AWSXRay.captureAWS(require('aws-sdk')),
       sqs = AWSXRay.captureAWSClient(new AWS.SQS({apiVersion: '2012-11-05', region: 'eu-west-1'}));
 
 module.exports = {
